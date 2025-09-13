@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "automatic-book-screenshot",
+  "version": "0.1.0",
+  "identifier": "com.nagataniyusaku.automatic-book-screenshot",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "automatic-book-screenshot",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "log": {
+      "targets": [
+        {
+          "target": "stdout",
+          "level": "debug"
+        },
+        {
+          "target": "file",
+          "level": "info"
+        }
+      ]
+    }
+  },
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "log:default",
+    "dialog:open",
+    "dialog:save",
+    "fs:read-file",
+    "fs:write-file",
+    "fs:create-dir",
+    "fs:remove-dir",
+    "fs:exists",
+    "global-shortcut:all"
+  ],
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
