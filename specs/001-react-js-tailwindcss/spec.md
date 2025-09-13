@@ -3,27 +3,31 @@
 **Feature Branch**: `001-react-js-tailwindcss`  
 **Created**: 2025-09-12  
 **Status**: Draft  
-**Input**: User description: "React.js + TailwindCSS + Rust"
+**Input**: User description: "React.js + TailwindCSS + Rustで、簡単な自動スクショアプリを作成したい。使用環境は Macで、Kindleなどの書籍を自動でページめくり + 自動スクショするようなイメージ。起動するトリガーは特定のキーボードコマンドを叩くと起動するようにしたい"
 
 ## Execution Flow (main)
 
 ```
-1. Parse user description from Input
-   - If empty: ERROR "No feature description provided"
-2. Extract key concepts from description
-   - Identify: actors, actions, data, constraints
-3. For each unclear aspect:
-   - Mark with [NEEDS CLARIFICATION: specific question]
-4. Fill User Scenarios & Testing section
-   - If no clear user flow: ERROR "Cannot determine user scenarios"
-5. Generate Functional Requirements
-   - Each requirement must be testable
-   - Mark ambiguous requirements
-6. Identify Key Entities (if data involved)
-7. Run Review Checklist
-   - If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
-   - If implementation details found: ERROR "Remove tech details"
-8. Return: SUCCESS (spec ready for planning)
+1. Display legal disclaimer and obtain user consent
+   - If declined: EXIT "User did not accept terms"
+2. Request macOS accessibility and screen recording permissions
+   - If denied: ERROR "Required permissions not granted"
+3. Detect target e-book application (Kindle, etc.)
+   - If not found: PROMPT "Please open supported e-book application"
+4. Obtain book title for directory creation
+   - Try window title extraction first, fallback to user prompt
+5. Create screenshot directory structure
+   - Verify disk space availability
+6. Wait for user activation via keyboard shortcut
+7. Begin automated capture loop:
+   - Take screenshot of current page
+   - Save with timestamp and page number
+   - Wait configured interval (default 2 seconds)
+   - Send page turn command to e-book application
+   - Check for stop/pause signals
+   - Repeat until end of book or user stops
+8. Display completion summary and session statistics
+9. Return: SUCCESS (screenshots saved to configured location)
 ```
 
 ---
@@ -76,13 +80,17 @@ A book reader wants to automatically capture screenshots of every page while rea
 - How does the system handle protected or DRM-restricted content?
 - What occurs if the target application becomes unresponsive during page turning?
 - How does the system detect when a page has fully loaded before taking a screenshot?
+- How does the system resume from interruption or unexpected quit during processing?
+- What happens when processing multiple books consecutively?
+- How does the system handle screenshot capture failures or storage write errors?
+- What occurs when disk space is insufficient for storing screenshots?
 
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
 
 - **FR-001**: System MUST activate via configurable keyboard shortcut combination
-- **FR-002**: System MUST detect and integrate with supported e-book applications (starting with Kindle)
+- **FR-002**: System MUST detect and integrate with supported e-book applications (starting with Kindle) using macOS accessibility permissions and window management APIs
 - **FR-003**: System MUST automatically advance pages in the target e-book application
 - **FR-004**: System MUST capture screenshots of each page after navigation
 - **FR-005**: System MUST store screenshots in user-configurable directory with default location `~/Documents/BookScreenshots/[書籍名]/` and filename format `page_[番号]_[タイムスタンプ].png`
@@ -92,9 +100,12 @@ A book reader wants to automatically capture screenshots of every page while rea
 - **FR-009**: System MUST operate without interfering with other Mac applications
 - **FR-010**: System MUST provide feedback to user about automation status (running, stopped, completed)
 - **FR-011**: System MUST save screenshots in PNG format for high quality lossless compression
-- **FR-012**: System MUST display real-time progress indicator showing current page number and estimated completion time
+- **FR-012**: System MUST display real-time progress indicator showing current page number, elapsed time, and remaining page count
 - **FR-013**: System MUST provide pause and resume functionality via keyboard shortcuts
 - **FR-014**: System MUST allow users to customize keyboard shortcuts for start, stop, pause, and resume actions
+- **FR-015**: System MUST display legal disclaimer and require user confirmation before first use, warning about copyright and DRM restrictions
+- **FR-016**: System MUST limit functionality to personal use only and display warnings about commercial or distribution use
+- **FR-017**: System MUST obtain book title from application window title or prompt user for manual input to create appropriate directory structure
 
 ### Key Entities _(include if feature involves data)_
 
